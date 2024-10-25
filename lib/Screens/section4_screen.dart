@@ -189,7 +189,7 @@ class Section4Screen extends StatelessWidget {
           child: Center(
             child: Text(
               firstLine,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
             ),
           ),
@@ -198,7 +198,7 @@ class Section4Screen extends StatelessWidget {
           child: Center(
             child: Text(
               secondLine,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
             ),
           ),
@@ -207,7 +207,7 @@ class Section4Screen extends StatelessWidget {
           child: Center(
             child: Text(
               thirdLine,
-              style: const TextStyle(fontSize: 18),
+              style: const TextStyle(fontSize: 15),
               textAlign: TextAlign.center,
             ),
           ),
