@@ -299,24 +299,28 @@ class _Form1ScreenState extends State<Form1Screen> {
                                   j == 0 ? 'Prueba 1' : 'Prueba 2',
                                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                 ),
-                              TextField(
-                                controller: (() {
-                                  final controller = TextEditingController();
-                                  textControllers.add(controller);
-                                  return controller;
-                                })(),
-                                keyboardType: TextInputType.number,
-                                textAlign: TextAlign.center,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[01]')),
-                                  LengthLimitingTextInputFormatter(1),
-                                ],
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  contentPadding: EdgeInsets.symmetric(vertical: 8),
-                                ),
-                                onChanged: (_) => updateSum(),
+                              TextField(controller: (() {
+                                final controller = TextEditingController();
+                                textControllers.add(controller);
+                                return controller;
+                              })(),
+                              keyboardType: TextInputType.number,
+                              textAlign: TextAlign.center,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.allow(RegExp(r'[01]')),
+                                LengthLimitingTextInputFormatter(1),
+                              ],
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                contentPadding: EdgeInsets.symmetric(vertical: 8),
                               ),
+                              onChanged: (value) {
+                                if (value.isNotEmpty) {
+                                  updateSum();
+                                  FocusScope.of(context).nextFocus();
+                                }
+                              },
+                            ),
                             ],
                           ),
                         ),
