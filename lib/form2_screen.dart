@@ -293,8 +293,7 @@ class _Form2ScreenState extends State<Form2Screen> {
                                   j == 0 ? 'Prueba 1' : 'Prueba 2',
                                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                 ),
-                              TextField(
-                                controller: (() {
+                              TextField(controller: (() {
                                   final controller = TextEditingController();
                                   textControllers.add(controller);
                                   return controller;
@@ -309,7 +308,12 @@ class _Form2ScreenState extends State<Form2Screen> {
                                   border: OutlineInputBorder(),
                                   contentPadding: EdgeInsets.symmetric(vertical: 8),
                                 ),
-                                onChanged: (_) => updateSum(),
+                                onChanged: (value) {
+                                  if (value.isNotEmpty) {
+                                    updateSum();
+                                    FocusScope.of(context).nextFocus();
+                                  }
+                                },
                               ),
                             ],
                           ),
