@@ -65,7 +65,15 @@ class _RecordsScreenState extends State<RecordsScreen> {
         title: const Text('Registros'),
       ),
       body: records.isEmpty
-          ? Center(child: CircularProgressIndicator())
+          ? Center(
+              child: Text(
+                'No existen registros',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
           : AnimatedList(
               key: _listKey,
               initialItemCount: records.length,
