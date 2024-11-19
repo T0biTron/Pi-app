@@ -69,17 +69,28 @@ class _FormScreenState extends State<FormScreen> {
         _selectedYearOfTest != null &&
         _selectedMonthOfTest != null &&
         _selectedDayOfTest != null) {
-      DateTime birthDate =
-          DateTime(_selectedYearOfBirth!, _selectedMonthOfBirth!, _selectedDayOfBirth!);
-      DateTime testDate =
-          DateTime(_selectedYearOfTest!, _selectedMonthOfTest!, _selectedDayOfTest!);
+      int yearOfBirth = _selectedYearOfBirth!;
+      int monthOfBirth = _selectedMonthOfBirth!;
+      int dayOfBirth = _selectedDayOfBirth!;
+      int yearOfTest = _selectedYearOfTest!;
+      int monthOfTest = _selectedMonthOfTest!;
+      int dayOfTest = _selectedDayOfTest!;
 
-      Duration difference = testDate.difference(birthDate);
+      // Ajustar días
+      if (dayOfTest < dayOfBirth) {
+        monthOfTest -= 1;
+        dayOfTest += 30; // Asumimos 30 días en un mes para simplificar
+      }
 
-      int years = difference.inDays ~/ 365;
-      int remainingDays = difference.inDays % 365;
-      int months = remainingDays ~/ 30;
-      int days = remainingDays % 30;
+      // Ajustar meses
+      if (monthOfTest < monthOfBirth) {
+        yearOfTest -= 1;
+        monthOfTest += 12;
+      }
+
+      int days = dayOfTest - dayOfBirth;
+      int months = monthOfTest - monthOfBirth;
+      int years = yearOfTest - yearOfBirth;
 
       setState(() {
         _calculatedAge = '$years años, $months meses, $days días';
