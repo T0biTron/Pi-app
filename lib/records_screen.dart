@@ -23,6 +23,12 @@ class _RecordsScreenState extends State<RecordsScreen> {
 
   Future<void> fetchRecords() async {
     final List<dynamic> fetchedRecords = await apiService.getRecords();
+
+    print("Registros obtenidos:");
+    for (var record in fetchedRecords) {
+      print(jsonEncode(record)); // Muestra los registros completos
+    }
+
     setState(() {
       records = fetchedRecords.cast<Map<String, dynamic>>();
     });
@@ -42,7 +48,7 @@ class _RecordsScreenState extends State<RecordsScreen> {
         duration: Duration(milliseconds: 300),
       );
       // Espera a que la animación termine antes de eliminar el elemento de la lista
-    await Future.delayed(Duration(milliseconds: 300));
+      await Future.delayed(Duration(milliseconds: 300));
       setState(() {
         records.removeAt(index);
       });
@@ -84,7 +90,8 @@ class _RecordsScreenState extends State<RecordsScreen> {
     );
   }
 
-  Widget _buildListItem(Map<String, dynamic> record, Animation<double> animation) {
+  Widget _buildListItem(
+      Map<String, dynamic> record, Animation<double> animation) {
     return SizeTransition(
       sizeFactor: animation,
       axisAlignment: 0.0,
@@ -98,14 +105,26 @@ class _RecordsScreenState extends State<RecordsScreen> {
             : IconButton(
                 icon: Icon(Icons.delete, color: Colors.red),
                 onPressed: () {
-                  deleteRecord(int.parse(record['idUser'].toString()), records.indexOf(record));
+                  deleteRecord(int.parse(record['idUser'].toString()),
+                      records.indexOf(record));
                 },
               ),
-        onTap: () {
+        onTap: () async {
+          int idUser = int.parse(
+              record['idUser'].toString()); // Convierte idUser a entero
+
+          print("Obteniendo detalles para ID: $idUser...");
+
+          final detalles = await apiService.getRecordDetails(idUser);
+
+          print(
+              "Detalles obtenidos para ID $idUser: $detalles"); // 🔍 Verifica en la consola
+
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => RecordDetailScreen(record: record),
+              builder: (context) => RecordDetailScreen(
+                  record: detalles), // Pasa los datos completos //
             ),
           );
         },
