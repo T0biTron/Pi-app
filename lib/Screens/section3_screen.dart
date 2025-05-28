@@ -3,6 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/section2_screen.dart';
 import 'package:flutter_application_1/Screens/section4_screen.dart';
+import 'package:flutter_application_1/api_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Section3Screen extends StatefulWidget {
   final String name;
@@ -33,8 +36,8 @@ class Section3Screen extends StatefulWidget {
     required this.testDate,
     required this.calculatedAge,
     required this.totalLocomotoraScore,
-    required this.totalPelotaScore, 
-    required this.sumEP, 
+    required this.totalPelotaScore,
+    required this.sumEP,
     required this.ageScore,
   }) : super(key: key);
 
@@ -199,7 +202,7 @@ class _Section3ScreenState extends State<Section3Screen> {
       _rpController.text = "77";
       _imgController.text = "111";
       _ic90Controller.text = "104-117";
-      _ic95Controller.text = "103-118"; 
+      _ic95Controller.text = "103-118";
     }
     if (widget.sumEP == 25) {
       _rpController.text = "82";
@@ -297,21 +300,88 @@ class _Section3ScreenState extends State<Section3Screen> {
       _ic90Controller.text = "148-160";
       _ic95Controller.text = "146-161";
     }
-    int img = int.parse(_imgController.text);
-    if (img < 70) {
-      _tdController.text = "Deterioro o retraso";
-    } else if (img >= 70 && img <= 79) {
-      _tdController.text = "Borde del deterioro o retraso";
-    } else if (img >= 80 && img <= 89) {
-      _tdController.text = "Por debajo del promedio";
-    } else if (img >= 90 && img <= 109) {
-      _tdController.text = "Promedio";
-    } else if (img >= 110 && img <= 119) {
-      _tdController.text = "Encima del promedio";
-    } else if (img >= 120 && img <= 129) {
-      _tdController.text = "Superior";
-    } else if (img > 129) {
-      _tdController.text = "Con talento o muy avanzado";
+    try {
+      if (_imgController.text.isNotEmpty) {
+        int img = int.parse(_imgController.text);
+        if (img < 70) {
+          _tdController.text = "Deterioro o retraso";
+        } else if (img >= 70 && img <= 79) {
+          _tdController.text = "Borde del deterioro o retraso";
+        } else if (img >= 80 && img <= 89) {
+          _tdController.text = "Por debajo del promedio";
+        } else if (img >= 90 && img <= 109) {
+          _tdController.text = "Promedio";
+        } else if (img >= 110 && img <= 119) {
+          _tdController.text = "Encima del promedio";
+        } else if (img >= 120 && img <= 129) {
+          _tdController.text = "Superior";
+        } else if (img > 129) {
+          _tdController.text = "Con talento o muy avanzado";
+        }
+      }
+    } catch (e) {
+      print('Error al procesar el índice motor gruesa: $e');
+      // Opcionalmente puedes mostrar un mensaje al usuario
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text('Error al procesar el índice motor gruesa')),
+      );
+    }
+  }
+
+  Future<void> MotricidadGruesa() async {
+    try {
+      final motricidadData = {
+        'suma_puntuaciones_escaladas': _sumEPController.text,
+        'rango_percentil': _rpController.text,
+        'indice_motor_gruesa': _imgController.text,
+        'intervalo_confianza_90': _ic90Controller.text,
+        'intervalo_confianza_95': _ic95Controller.text,
+        'termino_descriptivo': _tdController.text,
+      };
+
+      final apiService = ApiService();
+      final success = await apiService.saveMotricidadGruesa(motricidadData);
+
+      if (success) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Datos de motricidad guardados correctamente')),
+        );
+
+        // Navegar a la siguiente pantalla
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Section4Screen(
+              name: widget.name,
+              gender: widget.gender,
+              birthDate: widget.birthDate,
+              school: widget.school,
+              preferredHand: widget.preferredHand,
+              preferredFoot: widget.preferredFoot,
+              examinerName: widget.examinerName,
+              examinerTitle: widget.examinerTitle,
+              testDate: widget.testDate,
+              calculatedAge: widget.calculatedAge,
+              totalLocomotoraScore: widget.totalLocomotoraScore,
+              totalPelotaScore: widget.totalPelotaScore,
+              sumEP: widget.sumEP,
+              ageScore: widget.ageScore,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Error al guardar los datos de motricidad')),
+        );
+      }
+    } catch (e) {
+      print('Error: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
     }
   }
 
@@ -373,7 +443,8 @@ class _Section3ScreenState extends State<Section3Screen> {
                           controller: _sumEPController,
                           decoration: const InputDecoration(
                               labelText: 'Suma de puntuaciones escaladas',
-                              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              labelStyle: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           readOnly: true,
                         ),
                       ),
@@ -387,7 +458,8 @@ class _Section3ScreenState extends State<Section3Screen> {
                           controller: _rpController,
                           decoration: InputDecoration(
                               labelText: 'Rango Percentil',
-                              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              labelStyle: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           readOnly: true,
                         ),
                       ),
@@ -396,14 +468,18 @@ class _Section3ScreenState extends State<Section3Screen> {
                           controller: _imgController,
                           decoration: InputDecoration(
                               labelText: 'Índice Motor Gruesa',
-                              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              labelStyle: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           readOnly: true,
                         ),
                       ),
                     ],
                   ),
                   const SizedBox(height: 10),
-                  Text('Intervalo de Confianza', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  Text(
+                    'Intervalo de Confianza',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -411,7 +487,8 @@ class _Section3ScreenState extends State<Section3Screen> {
                           controller: _ic90Controller,
                           decoration: InputDecoration(
                               labelText: '90%',
-                              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              labelStyle: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           readOnly: true,
                         ),
                       ),
@@ -421,7 +498,8 @@ class _Section3ScreenState extends State<Section3Screen> {
                           controller: _ic95Controller,
                           decoration: InputDecoration(
                               labelText: '95%',
-                              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              labelStyle: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           readOnly: true,
                         ),
                       ),
@@ -435,7 +513,8 @@ class _Section3ScreenState extends State<Section3Screen> {
                           controller: _tdController,
                           decoration: InputDecoration(
                               labelText: 'Término Descriptivo',
-                              labelStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                              labelStyle: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
                           readOnly: true,
                         ),
                       ),
@@ -448,40 +527,23 @@ class _Section3ScreenState extends State<Section3Screen> {
                 child: SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Section4Screen(
-                            name: widget.name,
-                            gender: widget.gender,
-                            birthDate: widget.birthDate,
-                            school: widget.school,
-                            preferredHand: widget.preferredHand,
-                            preferredFoot: widget.preferredFoot,
-                            examinerName: widget.examinerName,
-                            examinerTitle: widget.examinerTitle,
-                            testDate: widget.testDate,
-                            calculatedAge: widget.calculatedAge,
-                            totalLocomotoraScore: widget.totalLocomotoraScore,
-                            totalPelotaScore: widget.totalPelotaScore,
-                            sumEP: widget.sumEP,
-                            ageScore: widget.ageScore,
-                          ),
-                        ),
-                      );
+                    onPressed: () async {
+                      await MotricidadGruesa();
                     },
                     style: ElevatedButton.styleFrom(
-                      textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                      textStyle: const TextStyle(
+                          fontSize: 19, fontWeight: FontWeight.bold),
                       elevation: 18,
-                      shadowColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                      shadowColor:
+                          const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 15, horizontal: 50),
                       minimumSize: const Size(200, 50),
                     ),
                     child: const Text('Siguiente'),
                   ),
-              )
-            )
+                ),
+              ),
             ],
           ),
         ),

@@ -88,7 +88,8 @@ class Section4Screen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Puntaje Escalado',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -97,7 +98,8 @@ class Section4Screen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Término Descriptivo',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -106,7 +108,8 @@ class Section4Screen extends StatelessWidget {
                   child: Center(
                     child: Text(
                       'Índice de Puntaje',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -128,11 +131,11 @@ class Section4Screen extends StatelessWidget {
             const SizedBox(height: 30),
             _buildRow('8-12', 'Promedio', '90-109'),
             const SizedBox(height: 30),
-            _buildRow('','Encima',''),
+            _buildRow('', 'Encima', ''),
             _buildRow('13-14', 'del', '110-119'),
             _buildRow('', 'promedio', ''),
             const SizedBox(height: 30),
-            _buildRow('15-16', 'Superior','120-129'),
+            _buildRow('15-16', 'Superior', '120-129'),
             const SizedBox(height: 30),
             _buildRow('', 'Con talento', ''),
             _buildRow('17-20', 'o', '>129'),
@@ -166,10 +169,13 @@ class Section4Screen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(
+                        fontSize: 19, fontWeight: FontWeight.bold),
                     elevation: 18,
-                    shadowColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                    padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                    shadowColor:
+                        const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 15, horizontal: 50),
                     minimumSize: const Size(200, 50),
                   ),
                   child: const Text('Siguiente'),

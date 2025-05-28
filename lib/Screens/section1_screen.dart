@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Screens/section2_screen.dart';
 import 'package:flutter_application_1/form2_screen.dart';
-import 'package:flutter_application_1/api_service.dart'; // Asegúrate de importar ApiService
+import 'package:flutter_application_1/api_service.dart'; //
 
 class Section1Screen extends StatefulWidget {
   final int totalLocomotoraScore;
@@ -46,6 +46,8 @@ class _Section1ScreenState extends State<Section1Screen> {
 
   // Función para manejar el envío de datos al presionar "Siguiente"
   void _onSubmit() async {
+    if (!mounted) return;
+
     ApiService apiService = ApiService();
 
     // Paso 1: Guardar Institución y obtener el ID
@@ -56,7 +58,8 @@ class _Section1ScreenState extends State<Section1Screen> {
     }
 
     // Paso 2: Guardar Examinador y obtener el ID
-    int? examinerId = await apiService.saveExaminer(widget.examinerName, widget.examinerTitle);
+    int? examinerId = await apiService.saveExaminer(
+        widget.examinerName, widget.examinerTitle);
     if (examinerId == null) {
       _showMessage("Error al guardar el examinador.");
       return;
@@ -66,12 +69,14 @@ class _Section1ScreenState extends State<Section1Screen> {
     Map<String, dynamic> userData = {
       "name": widget.name,
       "gender": widget.gender ?? "No especificado",
-      "birthdate": "${widget.birthDate.year}-${widget.birthDate.month}-${widget.birthDate.day}",
+      "birthdate":
+          "${widget.birthDate.year}-${widget.birthDate.month}-${widget.birthDate.day}",
       "totalLocomotoraScore": widget.totalLocomotoraScore,
       "totalPelotaScore": widget.totalPelotaScore,
       "institutionId": institutionId,
       "examinerId": examinerId,
-      "testDate": "${widget.testDate.year}-${widget.testDate.month}-${widget.testDate.day}"
+      "testDate":
+          "${widget.testDate.year}-${widget.testDate.month}-${widget.testDate.day}"
     };
 
     int? userId = await apiService.saveUser(userData);
@@ -82,10 +87,9 @@ class _Section1ScreenState extends State<Section1Screen> {
 
     // Paso 4: Guardar Datos Adicionales (Mano y Pie Preferidos)
     bool datosGuardados = await apiService.saveDatos(
-      widget.preferredHand ?? "No especificado",
-      widget.preferredFoot ?? "No especificado",
-      userId
-    );
+        widget.preferredHand ?? "No especificado",
+        widget.preferredFoot ?? "No especificado",
+        userId);
 
     if (datosGuardados) {
       _showMessage("Datos guardados correctamente. Usuario ID: $userId");
@@ -107,6 +111,7 @@ class _Section1ScreenState extends State<Section1Screen> {
             testDate: widget.testDate,
             calculatedAge: widget.calculatedAge,
             ageScore: widget.ageScore,
+            idUser: userId,
           ),
         ),
       );
@@ -131,7 +136,8 @@ class _Section1ScreenState extends State<Section1Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Sección 1', style: TextStyle(fontSize: 25)),
-            Text('Información de Identificación', style: TextStyle(fontSize: 20)),
+            Text('Información de Identificación',
+                style: TextStyle(fontSize: 20)),
           ],
         ),
         leading: IconButton(
@@ -140,7 +146,7 @@ class _Section1ScreenState extends State<Section1Screen> {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => Form2Screen( 
+                builder: (context) => Form2Screen(
                   name: widget.name,
                   gender: widget.gender,
                   birthDate: widget.birthDate,
@@ -176,8 +182,10 @@ class _Section1ScreenState extends State<Section1Screen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildInfoRow('Género:', widget.gender ?? 'No especificado'),
-                _buildInfoRow('Mano Preferida:', widget.preferredHand ?? 'No especificado'),
-                _buildInfoRow('Pie Preferido:', widget.preferredFoot ?? 'No especificado'),
+                _buildInfoRow('Mano Preferida:',
+                    widget.preferredHand ?? 'No especificado'),
+                _buildInfoRow('Pie Preferido:',
+                    widget.preferredFoot ?? 'No especificado'),
               ],
             ),
             const SizedBox(height: 25),
@@ -208,12 +216,16 @@ class _Section1ScreenState extends State<Section1Screen> {
             _buildInfoRow('Título del Examinador:', widget.examinerTitle),
             const SizedBox(height: 25),
             ElevatedButton(
-              onPressed: _onSubmit, // Llama a _onSubmit para guardar los datos primero
+              onPressed:
+                  _onSubmit, // Llama a _onSubmit para guardar los datos primero
               style: ElevatedButton.styleFrom(
-                textStyle: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
+                textStyle:
+                    const TextStyle(fontSize: 19, fontWeight: FontWeight.bold),
                 elevation: 18,
-                shadowColor: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
-                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                shadowColor:
+                    const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               ),
               child: const Text(
                 'Siguiente',

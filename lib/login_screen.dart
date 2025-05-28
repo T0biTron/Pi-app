@@ -64,14 +64,16 @@ class _LoginScreenState extends State<LoginScreen>
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FormScreen(totalLocomotorScore: 0, totalPelotaScore: 0)),
+                  MaterialPageRoute(
+                      builder: (context) => FormScreen(
+                          totalLocomotorScore: 0, totalPelotaScore: 0)),
                 );
               },
               style: ElevatedButton.styleFrom(
                 textStyle: const TextStyle(fontSize: 16),
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
-              child: Text('Modo sin Conexión'),
+              child: Text('Crear Registro'),
             ),
             SizedBox(height: 20),
             ElevatedButton(
@@ -79,7 +81,9 @@ class _LoginScreenState extends State<LoginScreen>
                 // Navegar a la pantalla de registros
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => RecordsScreen()), // Navegar a RecordsScreen
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          RecordsScreen()), // Navegar a RecordsScreen
                 );
               },
               style: ElevatedButton.styleFrom(

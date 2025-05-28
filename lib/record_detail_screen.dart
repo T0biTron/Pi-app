@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class RecordDetailScreen extends StatelessWidget {
   final Map<String, dynamic> record;
 
-  const RecordDetailScreen({Key? key, required this.record}) : super(key: key);
+  const RecordDetailScreen({super.key, required this.record});
 
   // Función para calcular la edad a partir de la fecha de nacimiento
   String calculateAge(String birthdate, String testDate) {

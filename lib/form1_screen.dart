@@ -29,7 +29,9 @@ class Form1Screen extends StatefulWidget {
     required this.examinerName,
     required this.examinerTitle,
     required this.testDate,
-    required this.calculatedAge, required int totalLocomotoraScore, required totalPelotaScore,
+    required this.calculatedAge,
+    required int totalLocomotoraScore,
+    required totalPelotaScore,
     required this.ageScore,
   }) : super(key: key);
 
@@ -49,7 +51,8 @@ class _Form1ScreenState extends State<Form1Screen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Formulario de Evaluacion', style: TextStyle(fontSize: 23)),
-            Text('Subprueba Locomotora', style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+            Text('Subprueba Locomotora',
+                style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
           ],
         ),
         leading: IconButton(
@@ -68,8 +71,8 @@ class _Form1ScreenState extends State<Form1Screen> {
                   examinerName: widget.examinerName,
                   examinerTitle: widget.examinerTitle,
                   testDate: widget.testDate,
-                  calculatedAge: widget.calculatedAge, 
-                  totalLocomotoraScore: totalSumNotifier.value, 
+                  calculatedAge: widget.calculatedAge,
+                  totalLocomotoraScore: totalSumNotifier.value,
                   totalPelotaScore: totalSumNotifier.value,
                   ageScore: widget.ageScore,
                 ),
@@ -87,7 +90,7 @@ class _Form1ScreenState extends State<Form1Screen> {
               'Correr',
               '60 pies (18,3 metros)',
               'Área libre para correr, y conos o marcadores para delimitar.',
-              'Coloque dos conos a 50 pies (15,2 metros) de distancia. Asegúrese de que hay al menos 8-10 pies (2,4 a 3,1 metros) de espacio más allá del cono para una distancia para una parada segura. Dígale al niño que corra rápido de un cono al otro cono cuando diga "vamos". Repita una segunda prueba.',              
+              'Coloque dos conos a 50 pies (15,2 metros) de distancia. Asegúrese de que hay al menos 8-10 pies (2,4 a 3,1 metros) de espacio más allá del cono para una distancia para una parada segura. Dígale al niño que corra rápido de un cono al otro cono cuando diga "vamos". Repita una segunda prueba.',
               [
                 '1. Los brazos se mueven en oposición a las piernas con los codos doblados.',
                 '2. Breve periodo donde ambos pies están fuera de la superficie.',
@@ -163,7 +166,8 @@ class _Form1ScreenState extends State<Form1Screen> {
                     builder: (context, value, child) {
                       return Text(
                         'Puntuación Total Locomotora: $value',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       );
                     },
                   ),
@@ -184,7 +188,7 @@ class _Form1ScreenState extends State<Form1Screen> {
                             examinerTitle: widget.examinerTitle,
                             testDate: widget.testDate,
                             calculatedAge: widget.calculatedAge,
-                            totalLocomotoraScore: totalSumNotifier.value, 
+                            totalLocomotoraScore: totalSumNotifier.value,
                             totalPelotaScore: totalSumNotifier.value,
                             ageScore: widget.ageScore,
                           ),
@@ -202,7 +206,8 @@ class _Form1ScreenState extends State<Form1Screen> {
     );
   }
 
-  Widget buildFormRow(String title, String distancia, String materials, String orientacion, List<String> criteria) {
+  Widget buildFormRow(String title, String distancia, String materials,
+      String orientacion, List<String> criteria) {
     final rowKey = title;
     final ValueNotifier<int> totalSumController = ValueNotifier<int>(0);
     rowSumNotifiers[rowKey] = totalSumController;
@@ -215,7 +220,8 @@ class _Form1ScreenState extends State<Form1Screen> {
       }
       totalSumController.value = rowSum;
 
-      int totalSum = rowSumNotifiers.values.map((e) => e.value).reduce((a, b) => a + b);
+      int totalSum =
+          rowSumNotifiers.values.map((e) => e.value).reduce((a, b) => a + b);
       totalSumNotifier.value = totalSum;
     }
 
@@ -282,7 +288,8 @@ class _Form1ScreenState extends State<Form1Screen> {
                   flex: 2,
                   child: Text(
                     criteria[i],
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
                   ),
                 ),
                 SizedBox(width: 10),
@@ -297,30 +304,35 @@ class _Form1ScreenState extends State<Form1Screen> {
                               if (i == 0)
                                 Text(
                                   j == 0 ? 'Prueba 1' : 'Prueba 2',
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                              TextField(controller: (() {
-                                final controller = TextEditingController();
-                                textControllers.add(controller);
-                                return controller;
-                              })(),
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'[01]')),
-                                LengthLimitingTextInputFormatter(1),
-                              ],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                contentPadding: EdgeInsets.symmetric(vertical: 8),
+                              TextField(
+                                controller: (() {
+                                  final controller = TextEditingController();
+                                  textControllers.add(controller);
+                                  return controller;
+                                })(),
+                                keyboardType: TextInputType.number,
+                                textAlign: TextAlign.center,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.allow(
+                                      RegExp(r'[01]')),
+                                  LengthLimitingTextInputFormatter(1),
+                                ],
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  contentPadding:
+                                      EdgeInsets.symmetric(vertical: 8),
+                                ),
+                                onChanged: (value) {
+                                  if (value.isNotEmpty) {
+                                    updateSum();
+                                    FocusScope.of(context).nextFocus();
+                                  }
+                                },
                               ),
-                              onChanged: (value) {
-                                if (value.isNotEmpty) {
-                                  updateSum();
-                                  FocusScope.of(context).nextFocus();
-                                }
-                              },
-                            ),
                             ],
                           ),
                         ),

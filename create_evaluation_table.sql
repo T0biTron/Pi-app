@@ -1,0 +1,20 @@
+CREATE TABLE `Evaluation` (
+  `idEvaluation` int(11) NOT NULL AUTO_INCREMENT,
+  `User_idUser` int(11) NOT NULL,
+  `fecha_test` date NOT NULL,
+  `edad_anios` int(11) NOT NULL,
+  `edad_meses` int(11) NOT NULL,
+  `edad_dias` int(11) NOT NULL,
+  `locomotora_puntaje_bruto` int(11) NOT NULL,
+  `locomotora_rango_percentil` varchar(10) NOT NULL,
+  `locomotora_nivel_madurez` varchar(10) NOT NULL,
+  `pelota_puntaje_bruto` int(11) NOT NULL,
+  `pelota_rango_percentil` varchar(10) NOT NULL,
+  `pelota_nivel_madurez` varchar(10) NOT NULL,
+  `suma_puntuaciones` int(11) NOT NULL,
+  `diferencia_puntuaciones` int(11) NOT NULL,
+  `estado` varchar(50) NOT NULL,
+  PRIMARY KEY (`idEvaluation`),
+  KEY `User_idUser` (`User_idUser`),
+  CONSTRAINT `Evaluation_ibfk_1` FOREIGN KEY (`User_idUser`) REFERENCES `User` (`idUser`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; 
